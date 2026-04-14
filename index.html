@@ -2,12 +2,13 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🏁 Суперкар Симулятор — Аукцион и События</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>🏁 Суперкар Гараж</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
       background: #0b0b0b;
       color: #eee;
       padding: 16px;
@@ -25,85 +26,33 @@
       box-shadow: 0 12px 30px #000;
       border: 1px solid #333;
     }
-    h1 {
-      font-size: 26px;
-      font-weight: 700;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #ffd966;
-    }
+    h1 { font-size: 26px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; color: #ffd966; }
     .balance-panel {
-      background: #252525;
-      border-radius: 20px;
-      padding: 18px;
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 1px solid #444;
+      background: #252525; border-radius: 20px; padding: 18px; margin-bottom: 20px;
+      display: flex; justify-content: space-between; align-items: center; border: 1px solid #444;
     }
-    .balance {
-      font-size: 32px;
-      font-weight: 800;
-      color: #4caf50;
-    }
-    .income-badge {
-      background: #3a3a3a;
-      padding: 8px 16px;
-      border-radius: 40px;
-      font-size: 15px;
-      color: #ccc;
-    }
+    .balance { font-size: 32px; font-weight: 800; color: #4caf50; }
+    .income-badge { background: #3a3a3a; padding: 8px 16px; border-radius: 40px; font-size: 15px; color: #ccc; }
     .tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid #333;
-      padding-bottom: 10px;
+      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px;
+      border-bottom: 1px solid #333; padding-bottom: 10px;
     }
     .tab-btn {
-      background: transparent;
-      border: none;
-      color: #aaa;
-      font-size: 15px;
-      padding: 8px 14px;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: 0.2s;
-      font-weight: 600;
+      background: transparent; border: none; color: #aaa; font-size: 15px;
+      padding: 8px 14px; border-radius: 30px; cursor: pointer; transition: 0.2s; font-weight: 600;
     }
-    .tab-btn.active {
-      background: #ffd966;
-      color: #1a1a1a;
-    }
+    .tab-btn.active { background: #ffd966; color: #1a1a1a; }
     .section { display: none; }
     .section.active { display: block; }
-
-    /* карточки */
     .car-card, .shop-item, .auction-lot {
-      background: #222;
-      border-radius: 18px;
-      padding: 14px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      border: 1px solid #3a3a3a;
-      margin-bottom: 10px;
+      background: #222; border-radius: 18px; padding: 14px; display: flex;
+      align-items: center; gap: 14px; border: 1px solid #3a3a3a; margin-bottom: 10px;
     }
     .car-card.selected { border: 2px solid #ffd966; background: #2a2a2a; }
     .car-img {
-      width: 75px; height: 75px;
-      background: #1a1a1a;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 44px;
-      border: 1px solid #555;
-      object-fit: cover;
+      width: 75px; height: 75px; background: #1a1a1a; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center; font-size: 44px;
+      border: 1px solid #555; object-fit: cover;
     }
     .car-info { flex:1; }
     .car-name { font-weight: 700; font-size: 17px; }
@@ -111,10 +60,9 @@
     .car-income { color: #6f6; font-weight: 600; margin-top: 4px; }
     .price-tag { font-weight: 700; color: #ffd966; margin-top: 4px; }
     .btn {
-      background: #3a3a3a; border: none; color: white;
-      padding: 8px 14px; border-radius: 30px; font-size: 14px;
-      font-weight: 600; cursor: pointer; border: 1px solid #555;
-      transition: 0.2s;
+      background: #3a3a3a; border: none; color: white; padding: 8px 14px;
+      border-radius: 30px; font-size: 14px; font-weight: 600; cursor: pointer;
+      border: 1px solid #555; transition: 0.2s;
     }
     .btn-primary { background: #ffd966; color: #1a1a1a; border: none; }
     .btn-danger { background: #a33; border-color: #c44; }
@@ -129,13 +77,17 @@
       padding: 12px; border-radius: 12px; margin-bottom: 16px;
     }
     .footer-note { margin-top: 24px; font-size: 12px; text-align: center; color: #666; }
+    .loading-overlay {
+      position: fixed; top:0; left:0; right:0; bottom:0; background:#0b0b0b;
+      display:flex; align-items:center; justify-content:center; z-index:999;
+      color:#ffd966; font-size:20px;
+    }
   </style>
 </head>
 <body>
-<div id="app">
+<div id="loading" class="loading-overlay">🚀 Загрузка гаража...</div>
+<div id="app" style="display:none;">
   <h1>🏁 GARAGE DYNASTY</h1>
-
-  <!-- Баланс -->
   <div class="balance-panel">
     <div>
       <div style="font-size: 14px; color: #aaa;">БАЛАНС</div>
@@ -145,15 +97,11 @@
       <span id="totalIncome">0</span> / мин
     </div>
   </div>
-
-  <!-- Вкладки -->
   <div class="tabs">
     <button class="tab-btn active" data-tab="garage">🚘 Гараж</button>
     <button class="tab-btn" data-tab="catalog">🛒 Каталог</button>
     <button class="tab-btn" data-tab="auction">🔨 Аукцион</button>
   </div>
-
-  <!-- Секция Гаража -->
   <div id="garageSection" class="section active">
     <div id="garageContainer" class="garage-list"></div>
     <div class="collect-area">
@@ -162,149 +110,187 @@
     </div>
     <div id="eventMessage" style="margin-top: 10px;"></div>
   </div>
-
-  <!-- Секция Каталога -->
   <div id="catalogSection" class="section">
     <div id="catalogContainer"></div>
   </div>
-
-  <!-- Секция Аукциона -->
   <div id="auctionSection" class="section">
     <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
       <h3 style="color:#ffd966;">🔥 Горячие лоты</h3>
-      <span id="auctionRefreshTimer" style="color:#aaa;">Обновление: 04:59</span>
+      <span id="auctionRefreshTimer" style="color:#aaa;">Обновление: 05:00</span>
     </div>
     <div id="auctionContainer"></div>
     <button class="btn" id="forceRefreshAuction" style="width:100%; margin-top:8px;">🔄 Обновить вручную ($500)</button>
-    <p style="font-size:13px; color:#888; margin-top:8px;">Лоты обновляются каждые 5 минут. Успей купить дешевле рынка!</p>
+    <p style="font-size:13px; color:#888; margin-top:8px;">Лоты обновляются каждые 5 минут.</p>
   </div>
-
-  <div class="footer-note">
-    Выбери машину → Прокачай двигатель (🔧) или продай (💰)
-  </div>
+  <div class="footer-note">Выбери машину → Прокачай (🔧) или продай (💰)</div>
 </div>
 
 <script>
   (function(){
     "use strict";
 
-    // ---------- РАСШИРЕННАЯ БАЗА МАШИН (28 шт) ----------
-    const CARS_DB = [
-      { id:'supra', name:'Toyota Supra MK4', basePrice:45000, basePower:320, baseIncome:800, image:'🏎️', rarity:'common' },
-      { id:'mustang', name:'Ford Mustang GT', basePrice:42000, basePower:450, baseIncome:750, image:'🐎', rarity:'common' },
-      { id:'porsche718', name:'Porsche 718 Cayman', basePrice:95000, basePower:300, baseIncome:2000, image:'🇩🇪', rarity:'rare' },
-      { id:'bmwm4', name:'BMW M4 Competition', basePrice:89000, basePower:503, baseIncome:2200, image:'🇩🇪', rarity:'rare' },
-      { id:'audir8', name:'Audi R8 V10', basePrice:190000, basePower:562, baseIncome:4800, image:'🔊', rarity:'epic' },
-      { id:'amggt', name:'Mercedes-AMG GT', basePrice:175000, basePower:523, baseIncome:4500, image:'🌟', rarity:'epic' },
-      { id:'huracan', name:'Lamborghini Huracán', basePrice:350000, basePower:610, baseIncome:10000, image:'🔥', rarity:'legendary' },
-      { id:'ferrari296', name:'Ferrari 296 GTB', basePrice:380000, basePower:819, baseIncome:11500, image:'🇮🇹', rarity:'legendary' },
-      { id:'911turbo', name:'Porsche 911 Turbo S', basePrice:250000, basePower:640, baseIncome:7500, image:'💨', rarity:'epic' },
-      { id:'nissangtr', name:'Nissan GT-R Nismo', basePrice:220000, basePower:600, baseIncome:6800, image:'🇯🇵', rarity:'epic' },
-      { id:'mclaren720s', name:'McLaren 720S', basePrice:310000, basePower:710, baseIncome:9200, image:'🪽', rarity:'legendary' },
-      { id:'astonvantage', name:'Aston Martin Vantage', basePrice:200000, basePower:503, baseIncome:5200, image:'🇬🇧', rarity:'epic' },
-      { id:'corvettec8', name:'Chevrolet Corvette C8', basePrice:85000, basePower:495, baseIncome:2800, image:'🇺🇸', rarity:'rare' },
-      { id:'jaguarftype', name:'Jaguar F-Type R', basePrice:115000, basePower:575, baseIncome:3600, image:'🐆', rarity:'rare' },
-      { id:'maserati mc20', name:'Maserati MC20', basePrice:240000, basePower:621, baseIncome:7000, image:'🔱', rarity:'epic' },
-      { id:'bugatti chiron', name:'Bugatti Chiron', basePrice:3200000, basePower:1500, baseIncome:75000, image:'👑', rarity:'mythic' },
-      { id:'koenigsegg jesko', name:'Koenigsegg Jesko', basePrice:3500000, basePower:1600, baseIncome:82000, image:'⚡', rarity:'mythic' },
-      { id:'pagani huayra', name:'Pagani Huayra', basePrice:2800000, basePower:730, baseIncome:65000, image:'🎨', rarity:'mythic' },
-      { id:'lamborghini revuelto', name:'Lamborghini Revuelto', basePrice:600000, basePower:1001, baseIncome:18000, image:'🐂', rarity:'legendary' },
-      { id:'ferrari sf90', name:'Ferrari SF90 Stradale', basePrice:550000, basePower:986, baseIncome:17000, image:'🏁', rarity:'legendary' },
-      { id:'porsche 918', name:'Porsche 918 Spyder', basePrice:1400000, basePower:887, baseIncome:35000, image:'🔋', rarity:'mythic' },
-      { id:'mclaren p1', name:'McLaren P1', basePrice:1500000, basePower:903, baseIncome:37000, image:'🌀', rarity:'mythic' },
-      { id:'ferrari laferrari', name:'LaFerrari', basePrice:1800000, basePower:950, baseIncome:42000, image:'❤️', rarity:'mythic' },
-      { id:'lamborghini veneno', name:'Lamborghini Veneno', basePrice:4500000, basePower:740, baseIncome:95000, image:'💀', rarity:'mythic' },
-      { id:'bugatti divo', name:'Bugatti Divo', basePrice:5800000, basePower:1500, baseIncome:120000, image:'💎', rarity:'mythic' },
-      { id:'rimac nevera', name:'Rimac Nevera', basePrice:2400000, basePower:1914, baseIncome:68000, image:'🔌', rarity:'mythic' },
-      { id:'gordon murray t50', name:'GMA T.50', basePrice:3100000, basePower:663, baseIncome:55000, image:'🎵', rarity:'mythic' },
-      { id:'hennessey venom f5', name:'Hennessey Venom F5', basePrice:2100000, basePower:1817, baseIncome:60000, image:'🚀', rarity:'mythic' }
-    ];
-
-    // ---------- СОСТОЯНИЕ ----------
-    let balance = 120000;        // стартовый капитал побольше
-    let garage = [];
-    let selectedCarIndex = 0;
-    let incomeTimer = 60;
-    let timerInterval = null;
-
-    // Аукцион
-    let auctionLots = [];
-    let auctionTimer = 300; // 5 минут в секундах
-    let auctionInterval = null;
-
-    // Звук (Web Audio)
-    let audioCtx = null;
-    function initAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // ---------- TELEGRAM ----------
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+    tg.setHeaderColor('#1a1a1a');
+    tg.enableClosingConfirmation();
+    
+    function hapticImpact(style = 'light') {
+      if (tg.HapticFeedback) {
+        try { tg.HapticFeedback.impactOccurred(style); } catch(e) {}
       }
     }
 
-    function playEngineSound() {
-      try {
-        initAudio();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.value = 120 + Math.random() * 80;
-        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
-        osc.connect(gain).connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.3);
-      } catch(e) { /* без звука */ }
-    }
-
-    // Случайные события при сборе дохода
-    const EVENTS = [
-      { type: 'bonus', text: '🎥 Вашу машину сняли в клипе! +15% к доходу.', multiplier: 0.15 },
-      { type: 'bonus', text: '📈 Рынок суперкаров вырос! +10% к сбору.', multiplier: 0.10 },
-      { type: 'penalty', text: '⚠️ Штраф за превышение скорости. -$2000.', fixed: -2000 },
-      { type: 'penalty', text: '🔧 Поломка двигателя. Ремонт -$5000.', fixed: -5000 },
-      { type: 'neutral', text: '☕️ Обычный день. Ничего не произошло.', multiplier: 0 },
-      { type: 'jackpot', text: '💎 ВАШ АВТОМОБИЛЬ ПРИЗНАН ЛУЧШИМ! УДВОЕНИЕ ДОХОДА!', multiplier: 1.0 }
+    // ---------- БАЗА МАШИН (28) ----------
+    const CARS_DB = [
+      { id:'supra', name:'Toyota Supra MK4', basePrice:45000, basePower:320, baseIncome:800, image:'🏎️' },
+      { id:'mustang', name:'Ford Mustang GT', basePrice:42000, basePower:450, baseIncome:750, image:'🐎' },
+      { id:'porsche718', name:'Porsche 718 Cayman', basePrice:95000, basePower:300, baseIncome:2000, image:'🇩🇪' },
+      { id:'bmwm4', name:'BMW M4 Competition', basePrice:89000, basePower:503, baseIncome:2200, image:'🇩🇪' },
+      { id:'audir8', name:'Audi R8 V10', basePrice:190000, basePower:562, baseIncome:4800, image:'🔊' },
+      { id:'amggt', name:'Mercedes-AMG GT', basePrice:175000, basePower:523, baseIncome:4500, image:'🌟' },
+      { id:'huracan', name:'Lamborghini Huracán', basePrice:350000, basePower:610, baseIncome:10000, image:'🔥' },
+      { id:'ferrari296', name:'Ferrari 296 GTB', basePrice:380000, basePower:819, baseIncome:11500, image:'🇮🇹' },
+      { id:'911turbo', name:'Porsche 911 Turbo S', basePrice:250000, basePower:640, baseIncome:7500, image:'💨' },
+      { id:'nissangtr', name:'Nissan GT-R Nismo', basePrice:220000, basePower:600, baseIncome:6800, image:'🇯🇵' },
+      { id:'mclaren720s', name:'McLaren 720S', basePrice:310000, basePower:710, baseIncome:9200, image:'🪽' },
+      { id:'astonvantage', name:'Aston Martin Vantage', basePrice:200000, basePower:503, baseIncome:5200, image:'🇬🇧' },
+      { id:'corvettec8', name:'Chevrolet Corvette C8', basePrice:85000, basePower:495, baseIncome:2800, image:'🇺🇸' },
+      { id:'jaguarftype', name:'Jaguar F-Type R', basePrice:115000, basePower:575, baseIncome:3600, image:'🐆' },
+      { id:'maserati mc20', name:'Maserati MC20', basePrice:240000, basePower:621, baseIncome:7000, image:'🔱' },
+      { id:'bugatti chiron', name:'Bugatti Chiron', basePrice:3200000, basePower:1500, baseIncome:75000, image:'👑' },
+      { id:'koenigsegg jesko', name:'Koenigsegg Jesko', basePrice:3500000, basePower:1600, baseIncome:82000, image:'⚡' },
+      { id:'pagani huayra', name:'Pagani Huayra', basePrice:2800000, basePower:730, baseIncome:65000, image:'🎨' },
+      { id:'lamborghini revuelto', name:'Lamborghini Revuelto', basePrice:600000, basePower:1001, baseIncome:18000, image:'🐂' },
+      { id:'ferrari sf90', name:'Ferrari SF90 Stradale', basePrice:550000, basePower:986, baseIncome:17000, image:'🏁' },
+      { id:'porsche 918', name:'Porsche 918 Spyder', basePrice:1400000, basePower:887, baseIncome:35000, image:'🔋' },
+      { id:'mclaren p1', name:'McLaren P1', basePrice:1500000, basePower:903, baseIncome:37000, image:'🌀' },
+      { id:'ferrari laferrari', name:'LaFerrari', basePrice:1800000, basePower:950, baseIncome:42000, image:'❤️' },
+      { id:'lamborghini veneno', name:'Lamborghini Veneno', basePrice:4500000, basePower:740, baseIncome:95000, image:'💀' },
+      { id:'bugatti divo', name:'Bugatti Divo', basePrice:5800000, basePower:1500, baseIncome:120000, image:'💎' },
+      { id:'rimac nevera', name:'Rimac Nevera', basePrice:2400000, basePower:1914, baseIncome:68000, image:'🔌' },
+      { id:'gordon murray t50', name:'GMA T.50', basePrice:3100000, basePower:663, baseIncome:55000, image:'🎵' },
+      { id:'hennessey venom f5', name:'Hennessey Venom F5', basePrice:2100000, basePower:1817, baseIncome:60000, image:'🚀' }
     ];
 
-    // ---------- ХРАНЕНИЕ ----------
-    function saveGame() {
-      localStorage.setItem('supercarSimV2', JSON.stringify({ balance, garage, auctionLots, auctionTimer }));
+    // ---------- СОСТОЯНИЕ С ЗАЩИТОЙ ОТ NaN ----------
+    let balance = 120000;
+    let garage = [];
+    let selectedCarIndex = 0;
+    let incomeTimer = 60;
+    let auctionLots = [];
+    let auctionTimer = 300;
+    
+    let timerInterval = null;
+    let audioCtx = null;
+
+    // ---------- БЕЗОПАСНОЕ СОХРАНЕНИЕ / ЗАГРУЗКА ----------
+    const STORAGE_KEY = 'supercar_sim_v3_fixed';
+
+    // Функция безопасного числа
+    function safeNumber(value, fallback = 0) {
+      const num = Number(value);
+      return isNaN(num) ? fallback : num;
     }
-    function loadGame() {
-      const saved = localStorage.getItem('supercarSimV2');
-      if(saved) {
+
+    async function loadGame() {
+      let loadedData = null;
+      
+      // 1. Пробуем CloudStorage
+      try {
+        const cloudResult = await new Promise((resolve) => {
+          tg.CloudStorage.getItem(STORAGE_KEY, (err, value) => {
+            if (err) resolve(null);
+            else resolve(value);
+          });
+        });
+        if (cloudResult) loadedData = cloudResult;
+      } catch(e) { console.warn('CloudStorage error:', e); }
+
+      // 2. Fallback на localStorage
+      if (!loadedData) {
+        const local = localStorage.getItem(STORAGE_KEY);
+        if (local) loadedData = local;
+      }
+
+      // 3. Парсим и валидируем
+      if (loadedData) {
         try {
-          const data = JSON.parse(saved);
-          balance = data.balance || 120000;
-          garage = data.garage || [];
-          auctionLots = data.auctionLots || [];
-          auctionTimer = data.auctionTimer || 300;
-        } catch(e) { resetProgress(); }
-      } else { resetProgress(); }
-      if(garage.length===0) addStarterCar();
-      if(auctionLots.length===0) generateAuctionLots();
+          const parsed = JSON.parse(loadedData);
+          balance = safeNumber(parsed.balance, 120000);
+          garage = Array.isArray(parsed.garage) ? parsed.garage : [];
+          auctionLots = Array.isArray(parsed.auctionLots) ? parsed.auctionLots : [];
+          auctionTimer = safeNumber(parsed.auctionTimer, 300);
+          
+          // Дополнительная валидация машин в гараже
+          garage = garage.filter(car => car && typeof car === 'object' && car.id);
+          garage.forEach(car => {
+            car.currentPower = safeNumber(car.currentPower, car.basePower);
+            car.upgradeLevel = safeNumber(car.upgradeLevel, 0);
+            car.baseIncome = safeNumber(car.baseIncome, 0);
+          });
+          
+          console.log('✅ Данные загружены, баланс:', balance);
+        } catch(e) {
+          console.error('Ошибка парсинга JSON, сброс', e);
+          resetToDefault();
+        }
+      } else {
+        resetToDefault();
+      }
+
+      // Гарантируем наличие стартовой машины
+      if (!garage.length) {
+        const supra = CARS_DB.find(c => c.id === 'supra');
+        if (supra) garage.push({ ...supra, currentPower: supra.basePower, upgradeLevel: 0 });
+      }
+      if (!auctionLots.length) generateAuctionLots();
+      
+      selectedCarIndex = 0;
     }
-    function resetProgress() {
+
+    function resetToDefault() {
       balance = 120000;
       garage = [];
-      addStarterCar();
+      const supra = CARS_DB.find(c => c.id === 'supra');
+      if (supra) garage.push({ ...supra, currentPower: supra.basePower, upgradeLevel: 0 });
       generateAuctionLots();
     }
-    function addStarterCar() {
-      const supra = CARS_DB.find(c=>c.id==='supra');
-      garage.push({ ...supra, currentPower: supra.basePower, upgradeLevel:0 });
-      selectedCarIndex = 0;
+
+    async function saveGame() {
+      const saveData = { balance, garage, auctionLots, auctionTimer };
+      const json = JSON.stringify(saveData);
+      
+      // Сохраняем в CloudStorage
+      try {
+        await new Promise((resolve, reject) => {
+          tg.CloudStorage.setItem(STORAGE_KEY, json, (err, success) => {
+            if (err || !success) reject(err);
+            else resolve();
+          });
+        });
+        console.log('💾 CloudStorage OK');
+      } catch(e) {
+        console.warn('⚠️ CloudStorage недоступен, пишем в localStorage');
+        localStorage.setItem(STORAGE_KEY, json);
+      }
     }
 
     // ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
     function getCarIncome(car) {
-      return Math.floor(car.baseIncome * (1 + 0.2 * car.upgradeLevel));
+      const base = safeNumber(car.baseIncome, 0);
+      const level = safeNumber(car.upgradeLevel, 0);
+      return Math.floor(base * (1 + 0.2 * level));
     }
+
     function totalIncomePerMinute() {
       return garage.reduce((sum, car) => sum + getCarIncome(car), 0);
     }
+
     function refreshUI() {
-      document.getElementById('balanceDisplay').textContent = `$${balance.toLocaleString()}`;
+      const bal = safeNumber(balance, 0);
+      document.getElementById('balanceDisplay').textContent = `$${bal.toLocaleString()}`;
       document.getElementById('totalIncome').textContent = `$${totalIncomePerMinute().toLocaleString()}`;
       renderGarage();
       renderCatalog();
@@ -313,7 +299,19 @@
       saveGame();
     }
 
-    // ---------- РЕНДЕРЫ ----------
+    // ---------- ГЕНЕРАЦИЯ АУКЦИОНА ----------
+    function generateAuctionLots() {
+      const ownedIds = garage.map(c => c.id);
+      const available = CARS_DB.filter(c => !ownedIds.includes(c.id));
+      const shuffled = [...available].sort(() => 0.5 - Math.random());
+      auctionLots = shuffled.slice(0, 5).map(car => ({
+        ...car,
+        auctionPrice: Math.floor(car.basePrice * (0.65 + Math.random() * 0.25)),
+        endTime: Date.now() + auctionTimer * 1000
+      }));
+    }
+
+    // ---------- РЕНДЕРЫ (без изменений, только безопасные вычисления) ----------
     function renderGarage() {
       const container = document.getElementById('garageContainer');
       if (!garage.length) {
@@ -323,7 +321,7 @@
       let html = '';
       garage.forEach((car, idx) => {
         const income = getCarIncome(car);
-        const sellPrice = Math.floor(car.basePrice * 0.6 * (1 + 0.1*car.upgradeLevel));
+        const sellPrice = Math.floor(car.basePrice * 0.6 * (1 + 0.1 * car.upgradeLevel));
         html += `<div class="car-card ${idx===selectedCarIndex?'selected':''}" data-index="${idx}">
           <div class="car-img">${car.image}</div>
           <div class="car-info">
@@ -338,9 +336,10 @@
         </div>`;
       });
       container.innerHTML = html;
+      
       document.querySelectorAll('.car-card').forEach(card => {
         card.addEventListener('click', (e) => {
-          if (e.target.tagName==='BUTTON') return;
+          if (e.target.tagName === 'BUTTON') return;
           selectedCarIndex = parseInt(card.dataset.index);
           playEngineSound();
           refreshUI();
@@ -358,9 +357,9 @@
 
     function renderCatalog() {
       const container = document.getElementById('catalogContainer');
-      const ownedIds = garage.map(c=>c.id);
-      const available = CARS_DB.filter(c=>!ownedIds.includes(c.id));
-      if(!available.length) {
+      const ownedIds = garage.map(c => c.id);
+      const available = CARS_DB.filter(c => !ownedIds.includes(c.id));
+      if (!available.length) {
         container.innerHTML = '<div class="empty-message">🎉 Все машины куплены!</div>';
         return;
       }
@@ -375,23 +374,9 @@
           <button class="btn btn-primary buy-btn" data-id="${car.id}">Купить</button>
         </div>
       `).join('');
-      document.querySelectorAll('.buy-btn').forEach(b => b.addEventListener('click', ()=>{
+      document.querySelectorAll('.buy-btn').forEach(b => b.addEventListener('click', () => {
         buyCar(b.dataset.id);
       }));
-    }
-
-    // Аукцион
-    function generateAuctionLots() {
-      const available = CARS_DB.filter(c => !garage.some(g=>g.id===c.id));
-      const shuffled = [...available].sort(()=>0.5-Math.random());
-      auctionLots = shuffled.slice(0, 5).map(car => {
-        const discount = 0.65 + Math.random() * 0.25; // 65%-90% от цены
-        return {
-          ...car,
-          auctionPrice: Math.floor(car.basePrice * discount),
-          endTime: Date.now() + auctionTimer * 1000
-        };
-      });
     }
 
     function renderAuction() {
@@ -401,7 +386,7 @@
         return;
       }
       container.innerHTML = auctionLots.map(lot => {
-        const owned = garage.some(c=>c.id===lot.id);
+        const owned = garage.some(c => c.id === lot.id);
         return `<div class="auction-lot">
           <div class="car-img">${lot.image}</div>
           <div class="car-info">
@@ -415,95 +400,132 @@
         </div>`;
       }).join('');
       document.querySelectorAll('[data-id]').forEach(b => {
-        if(b.disabled) return;
-        b.addEventListener('click', ()=>{
-          const id = b.dataset.id;
-          const price = parseInt(b.dataset.price);
-          buyCarFromAuction(id, price);
+        if (b.disabled) return;
+        b.addEventListener('click', () => {
+          buyCarFromAuction(b.dataset.id, parseInt(b.dataset.price));
         });
       });
       document.getElementById('auctionRefreshTimer').textContent = 
         `Обновление: ${Math.floor(auctionTimer/60)}:${(auctionTimer%60).toString().padStart(2,'0')}`;
     }
 
-    // Покупка
+    // ---------- ИГРОВЫЕ ДЕЙСТВИЯ ----------
     function buyCar(carId) {
-      const car = CARS_DB.find(c=>c.id===carId);
-      if(!car) return;
-      if(balance < car.basePrice) { alert('Недостаточно средств'); return; }
-      if(garage.some(c=>c.id===carId)) return;
+      hapticImpact('light');
+      const car = CARS_DB.find(c => c.id === carId);
+      if (!car) return;
+      if (balance < car.basePrice) { alert('Недостаточно средств'); return; }
+      if (garage.some(c => c.id === carId)) return;
       balance -= car.basePrice;
-      garage.push({...car, currentPower: car.basePower, upgradeLevel:0});
-      if(garage.length===1) selectedCarIndex=0;
-      // Убрать с аукциона если там был
-      auctionLots = auctionLots.filter(l=>l.id!==carId);
+      garage.push({...car, currentPower: car.basePower, upgradeLevel: 0});
+      if (garage.length === 1) selectedCarIndex = 0;
+      auctionLots = auctionLots.filter(l => l.id !== carId);
       refreshUI();
     }
+
     function buyCarFromAuction(carId, price) {
-      const car = CARS_DB.find(c=>c.id===carId);
-      if(!car) return;
-      if(balance < price) { alert('Недостаточно средств'); return; }
+      hapticImpact('medium');
+      const car = CARS_DB.find(c => c.id === carId);
+      if (!car) return;
+      if (balance < price) { alert('Недостаточно средств'); return; }
       balance -= price;
-      garage.push({...car, currentPower: car.basePower, upgradeLevel:0});
-      auctionLots = auctionLots.filter(l=>l.id!==carId);
+      garage.push({...car, currentPower: car.basePower, upgradeLevel: 0});
+      auctionLots = auctionLots.filter(l => l.id !== carId);
       refreshUI();
     }
 
     function sellCar(index) {
-      if(garage.length<=1) { alert('Нельзя продать последнюю машину!'); return; }
+      hapticImpact('light');
+      if (garage.length <= 1) { alert('Нельзя продать последнюю машину!'); return; }
       const car = garage[index];
-      const sellValue = Math.floor(car.basePrice * 0.6 * (1 + 0.1*car.upgradeLevel));
-      if(confirm(`Продать ${car.name} за $${sellValue.toLocaleString()}?`)) {
+      const sellValue = Math.floor(car.basePrice * 0.6 * (1 + 0.1 * car.upgradeLevel));
+      if (confirm(`Продать ${car.name} за $${sellValue.toLocaleString()}?`)) {
         balance += sellValue;
-        garage.splice(index,1);
-        if(selectedCarIndex >= garage.length) selectedCarIndex = 0;
+        garage.splice(index, 1);
+        if (selectedCarIndex >= garage.length) selectedCarIndex = 0;
         refreshUI();
       }
     }
 
     function upgradeCar(index) {
+      hapticImpact('medium');
       const car = garage[index];
-      const cost = Math.floor(car.basePrice * 0.1 * (car.upgradeLevel+1));
-      if(balance < cost) { alert(`Нужно $${cost}`); return; }
+      const cost = Math.floor(car.basePrice * 0.1 * (car.upgradeLevel + 1));
+      if (balance < cost) { alert(`Нужно $${cost}`); return; }
       balance -= cost;
       car.upgradeLevel++;
-      car.currentPower = Math.floor(car.basePower * (1+0.2*car.upgradeLevel));
+      car.currentPower = Math.floor(car.basePower * (1 + 0.2 * car.upgradeLevel));
       refreshUI();
     }
 
-    // Сбор дохода + случайное событие
+    // ---------- СБОР ДОХОДА + СОБЫТИЯ (без NaN) ----------
+    const EVENTS = [
+      { type: 'bonus', text: '🎥 Вашу машину сняли в клипе! +15% к доходу.', multiplier: 0.15 },
+      { type: 'bonus', text: '📈 Рынок суперкаров вырос! +10% к сбору.', multiplier: 0.10 },
+      { type: 'penalty', text: '⚠️ Штраф за превышение скорости. -$2000.', fixed: -2000 },
+      { type: 'penalty', text: '🔧 Поломка двигателя. Ремонт -$5000.', fixed: -5000 },
+      { type: 'neutral', text: '☕️ Обычный день. Ничего не произошло.', multiplier: 0 },
+      { type: 'jackpot', text: '💎 ВАШ АВТОМОБИЛЬ ПРИЗНАН ЛУЧШИМ! УДВОЕНИЕ ДОХОДА!', multiplier: 1.0 }
+    ];
+
     function collectIncome() {
+      hapticImpact('heavy');
       let total = totalIncomePerMinute();
-      if(total<=0) { incomeTimer=60; refreshUI(); return; }
+      if (total <= 0) {
+        incomeTimer = 60;
+        refreshUI();
+        return;
+      }
 
-      // Случайное событие
-      const event = EVENTS[Math.floor(Math.random()*EVENTS.length)];
-      let eventText = '';
+      const event = EVENTS[Math.floor(Math.random() * EVENTS.length)];
       let extra = 0;
-      if(event.type==='bonus') { extra = Math.floor(total * event.multiplier); total += extra; eventText = `${event.text} +$${extra}`; }
-      else if(event.type==='penalty') { extra = event.fixed; total += extra; eventText = `${event.text}`; }
-      else if(event.type==='jackpot') { extra = total; total *= 2; eventText = `${event.text} +$${extra}`; }
-      else { eventText = event.text; }
-
-      if(total<0) total = 0;
+      let eventText = '';
+      
+      if (event.type === 'bonus') {
+        extra = Math.floor(total * event.multiplier);
+        total += extra;
+        eventText = `${event.text} +$${extra}`;
+      } else if (event.type === 'penalty') {
+        extra = event.fixed;
+        total += extra;
+        eventText = event.text;
+      } else if (event.type === 'jackpot') {
+        extra = total;
+        total *= 2;
+        eventText = `${event.text} +$${extra}`;
+      } else {
+        eventText = event.text;
+      }
+      
+      total = Math.max(0, total);
       balance += total;
       
       const msgDiv = document.getElementById('eventMessage');
       msgDiv.innerHTML = `<div class="event-popup">✨ ${eventText}<br>💰 Собрано: $${total.toLocaleString()}</div>`;
-      setTimeout(()=> msgDiv.innerHTML = '', 5000);
+      setTimeout(() => msgDiv.innerHTML = '', 5000);
       
       incomeTimer = 60;
       refreshUI();
     }
 
-    // Таймеры
+    // ---------- ТАЙМЕРЫ ----------
     function startTimers() {
-      if(timerInterval) clearInterval(timerInterval);
+      if (timerInterval) clearInterval(timerInterval);
       timerInterval = setInterval(() => {
-        if(incomeTimer>0) { incomeTimer--; updateTimerDisplay(); if(incomeTimer===0) collectIncome(); }
-        if(auctionTimer>0) { auctionTimer--; 
-          document.getElementById('auctionRefreshTimer').textContent = `Обновление: ${Math.floor(auctionTimer/60)}:${(auctionTimer%60).toString().padStart(2,'0')}`;
-          if(auctionTimer===0) { generateAuctionLots(); auctionTimer=300; renderAuction(); }
+        if (incomeTimer > 0) {
+          incomeTimer--;
+          updateTimerDisplay();
+          if (incomeTimer === 0) collectIncome();
+        }
+        if (auctionTimer > 0) {
+          auctionTimer--;
+          const timerSpan = document.getElementById('auctionRefreshTimer');
+          if (timerSpan) timerSpan.textContent = `Обновление: ${Math.floor(auctionTimer/60)}:${(auctionTimer%60).toString().padStart(2,'0')}`;
+          if (auctionTimer === 0) {
+            generateAuctionLots();
+            auctionTimer = 300;
+            renderAuction();
+          }
         }
       }, 1000);
     }
@@ -512,34 +534,61 @@
       document.getElementById('timerDisplay').textContent = `Следующий сбор: 00:${incomeTimer.toString().padStart(2,'0')}`;
     }
 
-    function forceRefreshAuction() {
-      if(balance < 500) { alert('Не хватает $500'); return; }
-      balance -= 500;
-      generateAuctionLots();
-      auctionTimer = 300;
-      refreshUI();
+    // ---------- ЗВУК ДВИГАТЕЛЯ ----------
+    function playEngineSound() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.value = 120 + Math.random() * 80;
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+      } catch(e) {}
     }
 
-    // Инициализация
-    function init() {
-      loadGame();
+    // ---------- ИНИЦИАЛИЗАЦИЯ ----------
+    async function init() {
+      await loadGame();
+      
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      
       initTabs();
       startTimers();
-      document.getElementById('collectIncomeBtn').onclick = ()=>{ if(incomeTimer>0) { collectIncome(); incomeTimer=60; } else collectIncome(); };
-      document.getElementById('forceRefreshAuction').onclick = forceRefreshAuction;
+      
+      document.getElementById('collectIncomeBtn').onclick = () => {
+        if (incomeTimer > 0) { collectIncome(); incomeTimer = 60; } 
+        else collectIncome();
+      };
+      document.getElementById('forceRefreshAuction').onclick = () => {
+        hapticImpact('light');
+        if (balance < 500) { alert('Не хватает $500'); return; }
+        balance -= 500;
+        generateAuctionLots();
+        auctionTimer = 300;
+        refreshUI();
+      };
+      
       refreshUI();
-      // Разблокировать аудио по первому клику
-      document.body.addEventListener('click', ()=> { if(audioCtx && audioCtx.state==='suspended') audioCtx.resume(); }, {once:true});
     }
 
     function initTabs() {
       const tabs = document.querySelectorAll('.tab-btn');
-      const sections = { garage: document.getElementById('garageSection'), catalog: document.getElementById('catalogSection'), auction: document.getElementById('auctionSection') };
-      tabs.forEach(t => t.addEventListener('click', ()=>{
+      const sections = {
+        garage: document.getElementById('garageSection'),
+        catalog: document.getElementById('catalogSection'),
+        auction: document.getElementById('auctionSection')
+      };
+      tabs.forEach(t => t.addEventListener('click', () => {
         const tab = t.dataset.tab;
-        tabs.forEach(btn=>btn.classList.remove('active'));
+        tabs.forEach(btn => btn.classList.remove('active'));
         t.classList.add('active');
-        Object.values(sections).forEach(s=>s.classList.remove('active'));
+        Object.values(sections).forEach(s => s.classList.remove('active'));
         sections[tab].classList.add('active');
       }));
     }
