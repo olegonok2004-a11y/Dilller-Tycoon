@@ -8,39 +8,23 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
-      background: #0b0b0b;
-      color: #eee;
-      padding: 16px;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0b0b0b; color: #eee; padding: 16px; min-height: 100vh;
+      display: flex; justify-content: center; align-items: flex-start;
     }
     #app {
-      max-width: 520px;
-      width: 100%;
-      background: #1a1a1a;
-      border-radius: 28px;
-      padding: 20px 16px;
-      box-shadow: 0 12px 30px #000;
-      border: 1px solid #333;
+      max-width: 520px; width: 100%; background: #1a1a1a; border-radius: 28px;
+      padding: 20px 16px; box-shadow: 0 12px 30px #000; border: 1px solid #333;
     }
-    h1 { font-size: 26px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; color: #ffd966; }
+    h1 { font-size: 26px; font-weight: 700; margin-bottom: 10px; color: #ffd966; }
     .balance-panel {
       background: #252525; border-radius: 20px; padding: 18px; margin-bottom: 20px;
       display: flex; justify-content: space-between; align-items: center; border: 1px solid #444;
     }
     .balance { font-size: 32px; font-weight: 800; color: #4caf50; }
     .income-badge { background: #3a3a3a; padding: 8px 16px; border-radius: 40px; font-size: 15px; color: #ccc; }
-    .tabs {
-      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px;
-      border-bottom: 1px solid #333; padding-bottom: 10px;
-    }
-    .tab-btn {
-      background: transparent; border: none; color: #aaa; font-size: 15px;
-      padding: 8px 14px; border-radius: 30px; cursor: pointer; transition: 0.2s; font-weight: 600;
-    }
+    .tabs { display: flex; gap: 6px; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+    .tab-btn { background: transparent; border: none; color: #aaa; font-size: 15px; padding: 8px 14px; border-radius: 30px; cursor: pointer; font-weight: 600; }
     .tab-btn.active { background: #ffd966; color: #1a1a1a; }
     .section { display: none; }
     .section.active { display: block; }
@@ -49,39 +33,23 @@
       align-items: center; gap: 14px; border: 1px solid #3a3a3a; margin-bottom: 10px;
     }
     .car-card.selected { border: 2px solid #ffd966; background: #2a2a2a; }
-    .car-img {
-      width: 75px; height: 75px; background: #1a1a1a; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center; font-size: 44px;
-      border: 1px solid #555; object-fit: cover;
-    }
+    .car-img { width: 75px; height: 75px; background: #1a1a1a; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 44px; border: 1px solid #555; }
     .car-info { flex:1; }
     .car-name { font-weight: 700; font-size: 17px; }
     .car-stats { font-size: 13px; color: #bbb; margin-top: 4px; }
     .car-income { color: #6f6; font-weight: 600; margin-top: 4px; }
     .price-tag { font-weight: 700; color: #ffd966; margin-top: 4px; }
-    .btn {
-      background: #3a3a3a; border: none; color: white; padding: 8px 14px;
-      border-radius: 30px; font-size: 14px; font-weight: 600; cursor: pointer;
-      border: 1px solid #555; transition: 0.2s;
-    }
+    .btn { background: #3a3a3a; border: none; color: white; padding: 8px 14px; border-radius: 30px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid #555; }
     .btn-primary { background: #ffd966; color: #1a1a1a; border: none; }
     .btn-danger { background: #a33; border-color: #c44; }
     .btn-success { background: #2e7d32; border-color: #4caf50; }
     .btn:disabled { opacity: 0.4; pointer-events: none; }
     .collect-area { margin: 20px 0 10px; text-align: center; }
     .timer { font-size: 15px; color: #bbb; margin-bottom: 10px; }
-    .auction-timer { font-size: 14px; color: #ffaa33; margin-top: 8px; }
     .empty-message { text-align: center; color: #777; padding: 30px; }
-    .event-popup {
-      background: #2c2c2c; border-left: 6px solid #ffd966;
-      padding: 12px; border-radius: 12px; margin-bottom: 16px;
-    }
+    .event-popup { background: #2c2c2c; border-left: 6px solid #ffd966; padding: 12px; border-radius: 12px; margin-bottom: 16px; }
     .footer-note { margin-top: 24px; font-size: 12px; text-align: center; color: #666; }
-    .loading-overlay {
-      position: fixed; top:0; left:0; right:0; bottom:0; background:#0b0b0b;
-      display:flex; align-items:center; justify-content:center; z-index:999;
-      color:#ffd966; font-size:20px;
-    }
+    .loading-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background:#0b0b0b; display:flex; align-items:center; justify-content:center; z-index:999; color:#ffd966; font-size:20px; }
   </style>
 </head>
 <body>
@@ -89,38 +57,38 @@
 <div id="app" style="display:none;">
   <h1>🏁 GARAGE DYNASTY</h1>
   <div class="balance-panel">
-    <div>
-      <div style="font-size: 14px; color: #aaa;">БАЛАНС</div>
-      <div class="balance" id="balanceDisplay">$0</div>
-    </div>
-    <div class="income-badge">
-      <span id="totalIncome">0</span> / мин
-    </div>
+    <div><div style="font-size:14px;color:#aaa;">БАЛАНС</div><div class="balance" id="balanceDisplay">$0</div></div>
+    <div class="income-badge"><span id="totalIncome">0</span> / мин</div>
   </div>
   <div class="tabs">
     <button class="tab-btn active" data-tab="garage">🚘 Гараж</button>
     <button class="tab-btn" data-tab="catalog">🛒 Каталог</button>
     <button class="tab-btn" data-tab="auction">🔨 Аукцион</button>
   </div>
+
+  <!-- Гараж -->
   <div id="garageSection" class="section active">
-    <div id="garageContainer" class="garage-list"></div>
+    <div id="garageContainer"></div>
     <div class="collect-area">
       <div class="timer" id="timerDisplay">Следующий сбор: 01:00</div>
       <button class="btn btn-primary" id="collectIncomeBtn" style="width:100%; padding:14px;">💰 СОБРАТЬ ДОХОД</button>
     </div>
-    <div id="eventMessage" style="margin-top: 10px;"></div>
+    <div id="eventMessage"></div>
   </div>
+
+  <!-- Каталог -->
   <div id="catalogSection" class="section">
     <div id="catalogContainer"></div>
   </div>
+
+  <!-- Аукцион -->
   <div id="auctionSection" class="section">
     <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
       <h3 style="color:#ffd966;">🔥 Горячие лоты</h3>
-      <span id="auctionRefreshTimer" style="color:#aaa;">Обновление: 05:00</span>
+      <span id="auctionRefreshTimer">Обновление: 05:00</span>
     </div>
     <div id="auctionContainer"></div>
     <button class="btn" id="forceRefreshAuction" style="width:100%; margin-top:8px;">🔄 Обновить вручную ($500)</button>
-    <p style="font-size:13px; color:#888; margin-top:8px;">Лоты обновляются каждые 5 минут.</p>
   </div>
   <div class="footer-note">Выбери машину → Прокачай (🔧) или продай (💰)</div>
 </div>
@@ -129,20 +97,15 @@
   (function(){
     "use strict";
 
-    // ---------- TELEGRAM ----------
+    // ---------- TELEGRAM INIT ----------
     const tg = window.Telegram.WebApp;
     tg.ready();
     tg.expand();
     tg.setHeaderColor('#1a1a1a');
     tg.enableClosingConfirmation();
-    
-    function hapticImpact(style = 'light') {
-      if (tg.HapticFeedback) {
-        try { tg.HapticFeedback.impactOccurred(style); } catch(e) {}
-      }
-    }
+    function haptic(style='light') { if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred(style); }
 
-    // ---------- БАЗА МАШИН (28) ----------
+    // ---------- ПОЛНАЯ БАЗА МАШИН (28) ----------
     const CARS_DB = [
       { id:'supra', name:'Toyota Supra MK4', basePrice:45000, basePower:320, baseIncome:800, image:'🏎️' },
       { id:'mustang', name:'Ford Mustang GT', basePrice:42000, basePower:450, baseIncome:750, image:'🐎' },
@@ -174,124 +137,74 @@
       { id:'hennessey venom f5', name:'Hennessey Venom F5', basePrice:2100000, basePower:1817, baseIncome:60000, image:'🚀' }
     ];
 
-    // ---------- СОСТОЯНИЕ С ЗАЩИТОЙ ОТ NaN ----------
+    // ---------- СОСТОЯНИЕ ----------
     let balance = 120000;
     let garage = [];
     let selectedCarIndex = 0;
     let incomeTimer = 60;
     let auctionLots = [];
     let auctionTimer = 300;
-    
+    let isProcessing = false;
     let timerInterval = null;
     let audioCtx = null;
 
-    // ---------- БЕЗОПАСНОЕ СОХРАНЕНИЕ / ЗАГРУЗКА ----------
-    const STORAGE_KEY = 'supercar_sim_v3_fixed';
+    // ---------- УТИЛИТЫ ----------
+    function safeNumber(val, def=0) { const n=Number(val); return isNaN(n)?def:n; }
+    function getCarIncome(car) { return Math.floor(car.baseIncome * (1 + 0.2 * car.upgradeLevel)); }
+    function totalIncome() { return garage.reduce((s,c)=>s+getCarIncome(c),0); }
 
-    // Функция безопасного числа
-    function safeNumber(value, fallback = 0) {
-      const num = Number(value);
-      return isNaN(num) ? fallback : num;
-    }
-
+    // ---------- ХРАНИЛИЩЕ ----------
+    const STORAGE_KEY = 'supercar_sim_v5_full';
     async function loadGame() {
-      let loadedData = null;
-      
-      // 1. Пробуем CloudStorage
+      let data = null;
       try {
-        const cloudResult = await new Promise((resolve) => {
-          tg.CloudStorage.getItem(STORAGE_KEY, (err, value) => {
-            if (err) resolve(null);
-            else resolve(value);
-          });
-        });
-        if (cloudResult) loadedData = cloudResult;
-      } catch(e) { console.warn('CloudStorage error:', e); }
-
-      // 2. Fallback на localStorage
-      if (!loadedData) {
-        const local = localStorage.getItem(STORAGE_KEY);
-        if (local) loadedData = local;
-      }
-
-      // 3. Парсим и валидируем
-      if (loadedData) {
-        try {
-          const parsed = JSON.parse(loadedData);
-          balance = safeNumber(parsed.balance, 120000);
-          garage = Array.isArray(parsed.garage) ? parsed.garage : [];
-          auctionLots = Array.isArray(parsed.auctionLots) ? parsed.auctionLots : [];
-          auctionTimer = safeNumber(parsed.auctionTimer, 300);
-          
-          // Дополнительная валидация машин в гараже
-          garage = garage.filter(car => car && typeof car === 'object' && car.id);
-          garage.forEach(car => {
-            car.currentPower = safeNumber(car.currentPower, car.basePower);
-            car.upgradeLevel = safeNumber(car.upgradeLevel, 0);
-            car.baseIncome = safeNumber(car.baseIncome, 0);
-          });
-          
-          console.log('✅ Данные загружены, баланс:', balance);
-        } catch(e) {
-          console.error('Ошибка парсинга JSON, сброс', e);
-          resetToDefault();
-        }
-      } else {
-        resetToDefault();
-      }
-
-      // Гарантируем наличие стартовой машины
-      if (!garage.length) {
-        const supra = CARS_DB.find(c => c.id === 'supra');
-        if (supra) garage.push({ ...supra, currentPower: supra.basePower, upgradeLevel: 0 });
-      }
-      if (!auctionLots.length) generateAuctionLots();
+        const cloud = await new Promise(r=>tg.CloudStorage.getItem(STORAGE_KEY,(e,v)=>r(e?null:v)));
+        if(cloud) data = cloud;
+        else data = localStorage.getItem(STORAGE_KEY);
+      } catch(e) { data = localStorage.getItem(STORAGE_KEY); }
       
-      selectedCarIndex = 0;
+      if(data) {
+        try {
+          const p = JSON.parse(data);
+          balance = safeNumber(p.balance, 120000);
+          garage = Array.isArray(p.garage)?p.garage:[];
+          auctionLots = Array.isArray(p.auctionLots)?p.auctionLots:[];
+          auctionTimer = safeNumber(p.auctionTimer, 300);
+          garage.forEach(c=>{ c.currentPower=safeNumber(c.currentPower,c.basePower); c.upgradeLevel=safeNumber(c.upgradeLevel,0); });
+        } catch(e){ resetToDefault(); }
+      } else resetToDefault();
+      
+      if(!garage.length) { const s=CARS_DB.find(c=>c.id==='supra'); if(s) garage.push({...s, currentPower:s.basePower, upgradeLevel:0}); }
+      if(!auctionLots.length) generateAuctionLots();
+      selectedCarIndex=0;
+      console.log(`📦 Загружено: гараж ${garage.length} машин, каталог ${CARS_DB.length} всего`);
     }
 
     function resetToDefault() {
-      balance = 120000;
-      garage = [];
-      const supra = CARS_DB.find(c => c.id === 'supra');
-      if (supra) garage.push({ ...supra, currentPower: supra.basePower, upgradeLevel: 0 });
+      balance=120000; garage=[];
+      const s=CARS_DB.find(c=>c.id==='supra'); if(s) garage.push({...s, currentPower:s.basePower, upgradeLevel:0});
       generateAuctionLots();
     }
 
     async function saveGame() {
-      const saveData = { balance, garage, auctionLots, auctionTimer };
-      const json = JSON.stringify(saveData);
-      
-      // Сохраняем в CloudStorage
+      const save={balance,garage,auctionLots,auctionTimer};
+      const json=JSON.stringify(save);
       try {
-        await new Promise((resolve, reject) => {
-          tg.CloudStorage.setItem(STORAGE_KEY, json, (err, success) => {
-            if (err || !success) reject(err);
-            else resolve();
-          });
-        });
-        console.log('💾 CloudStorage OK');
-      } catch(e) {
-        console.warn('⚠️ CloudStorage недоступен, пишем в localStorage');
-        localStorage.setItem(STORAGE_KEY, json);
-      }
+        await new Promise((r,j)=>tg.CloudStorage.setItem(STORAGE_KEY,json,(e,s)=>e||!s?j(e):r()));
+      } catch(e) { localStorage.setItem(STORAGE_KEY,json); }
     }
 
-    // ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
-    function getCarIncome(car) {
-      const base = safeNumber(car.baseIncome, 0);
-      const level = safeNumber(car.upgradeLevel, 0);
-      return Math.floor(base * (1 + 0.2 * level));
+    function generateAuctionLots() {
+      const owned=garage.map(c=>c.id);
+      const avail=CARS_DB.filter(c=>!owned.includes(c.id));
+      const shuffled=[...avail].sort(()=>0.5-Math.random());
+      auctionLots=shuffled.slice(0,5).map(c=>({...c, auctionPrice:Math.floor(c.basePrice*(0.65+Math.random()*0.25))}));
     }
 
-    function totalIncomePerMinute() {
-      return garage.reduce((sum, car) => sum + getCarIncome(car), 0);
-    }
-
+    // ---------- РЕНДЕР ----------
     function refreshUI() {
-      const bal = safeNumber(balance, 0);
-      document.getElementById('balanceDisplay').textContent = `$${bal.toLocaleString()}`;
-      document.getElementById('totalIncome').textContent = `$${totalIncomePerMinute().toLocaleString()}`;
+      document.getElementById('balanceDisplay').textContent = `$${balance.toLocaleString()}`;
+      document.getElementById('totalIncome').textContent = `$${totalIncome().toLocaleString()}`;
       renderGarage();
       renderCatalog();
       renderAuction();
@@ -299,19 +212,7 @@
       saveGame();
     }
 
-    // ---------- ГЕНЕРАЦИЯ АУКЦИОНА ----------
-    function generateAuctionLots() {
-      const ownedIds = garage.map(c => c.id);
-      const available = CARS_DB.filter(c => !ownedIds.includes(c.id));
-      const shuffled = [...available].sort(() => 0.5 - Math.random());
-      auctionLots = shuffled.slice(0, 5).map(car => ({
-        ...car,
-        auctionPrice: Math.floor(car.basePrice * (0.65 + Math.random() * 0.25)),
-        endTime: Date.now() + auctionTimer * 1000
-      }));
-    }
-
-    // ---------- РЕНДЕРЫ (без изменений, только безопасные вычисления) ----------
+    // *** ГАРАЖ ***
     function renderGarage() {
       const container = document.getElementById('garageContainer');
       if (!garage.length) {
@@ -355,16 +256,20 @@
       }));
     }
 
+    // *** КАТАЛОГ ***
     function renderCatalog() {
       const container = document.getElementById('catalogContainer');
-      const ownedIds = garage.map(c => c.id);
-      const available = CARS_DB.filter(c => !ownedIds.includes(c.id));
-      if (!available.length) {
+      const ownedIds = garage.map(c=>c.id);
+      const available = CARS_DB.filter(c=>!ownedIds.includes(c.id));
+      
+      console.log(`🛒 Каталог: всего ${CARS_DB.length}, в гараже ${ownedIds.length}, доступно ${available.length}`);
+      
+      if(!available.length) {
         container.innerHTML = '<div class="empty-message">🎉 Все машины куплены!</div>';
         return;
       }
       container.innerHTML = available.map(car => `
-        <div class="shop-item">
+        <div class="shop-item" data-car-id="${car.id}">
           <div class="car-img">${car.image}</div>
           <div class="car-info">
             <div class="car-name">${car.name}</div>
@@ -374,158 +279,169 @@
           <button class="btn btn-primary buy-btn" data-id="${car.id}">Купить</button>
         </div>
       `).join('');
-      document.querySelectorAll('.buy-btn').forEach(b => b.addEventListener('click', () => {
-        buyCar(b.dataset.id);
-      }));
+      
+      container.removeEventListener('click', handleCatalogClick);
+      container.addEventListener('click', handleCatalogClick);
     }
 
+    function handleCatalogClick(e) {
+      const buyBtn = e.target.closest('.buy-btn');
+      if (!buyBtn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      
+      if (isProcessing) { haptic('light'); return; }
+      
+      const carId = buyBtn.dataset.id;
+      const car = CARS_DB.find(c => c.id === carId);
+      if (!car) return;
+      
+      if (garage.some(c => c.id === carId)) {
+        alert('Эта машина уже в гараже!');
+        return;
+      }
+      if (balance < car.basePrice) {
+        alert(`Недостаточно средств! Нужно $${car.basePrice.toLocaleString()}`);
+        haptic('light');
+        return;
+      }
+      
+      isProcessing = true;
+      haptic('medium');
+      
+      balance -= car.basePrice;
+      garage.push({...car, currentPower: car.basePower, upgradeLevel: 0});
+      if (garage.length === 1) selectedCarIndex = 0;
+      auctionLots = auctionLots.filter(l => l.id !== carId);
+      
+      refreshUI();
+      isProcessing = false;
+    }
+
+    // *** АУКЦИОН ***
     function renderAuction() {
       const container = document.getElementById('auctionContainer');
-      if (!auctionLots.length) {
+      if(!auctionLots.length) {
         container.innerHTML = '<div class="empty-message">Нет активных лотов</div>';
         return;
       }
       container.innerHTML = auctionLots.map(lot => {
-        const owned = garage.some(c => c.id === lot.id);
-        return `<div class="auction-lot">
+        const owned = garage.some(c=>c.id===lot.id);
+        return `<div class="auction-lot" data-lot-id="${lot.id}">
           <div class="car-img">${lot.image}</div>
           <div class="car-info">
             <div class="car-name">${lot.name}</div>
             <div class="car-stats">Обычная цена: $${lot.basePrice.toLocaleString()}</div>
             <div class="price-tag">🏷️ Аукцион: $${lot.auctionPrice.toLocaleString()}</div>
           </div>
-          <button class="btn btn-success" data-id="${lot.id}" data-price="${lot.auctionPrice}" ${owned?'disabled':''}>
+          <button class="btn btn-success auction-buy-btn" data-id="${lot.id}" data-price="${lot.auctionPrice}" ${owned?'disabled':''}>
             ${owned?'В гараже':'Купить'}
           </button>
         </div>`;
       }).join('');
-      document.querySelectorAll('[data-id]').forEach(b => {
-        if (b.disabled) return;
-        b.addEventListener('click', () => {
-          buyCarFromAuction(b.dataset.id, parseInt(b.dataset.price));
-        });
-      });
+      
+      container.removeEventListener('click', handleAuctionClick);
+      container.addEventListener('click', handleAuctionClick);
+      
       document.getElementById('auctionRefreshTimer').textContent = 
         `Обновление: ${Math.floor(auctionTimer/60)}:${(auctionTimer%60).toString().padStart(2,'0')}`;
     }
 
-    // ---------- ИГРОВЫЕ ДЕЙСТВИЯ ----------
-    function buyCar(carId) {
-      hapticImpact('light');
+    function handleAuctionClick(e) {
+      const buyBtn = e.target.closest('.auction-buy-btn');
+      if (!buyBtn || buyBtn.disabled) return;
+      e.preventDefault();
+      e.stopPropagation();
+      
+      if (isProcessing) return;
+      
+      const carId = buyBtn.dataset.id;
+      const price = parseInt(buyBtn.dataset.price);
       const car = CARS_DB.find(c => c.id === carId);
       if (!car) return;
-      if (balance < car.basePrice) { alert('Недостаточно средств'); return; }
-      if (garage.some(c => c.id === carId)) return;
-      balance -= car.basePrice;
-      garage.push({...car, currentPower: car.basePower, upgradeLevel: 0});
-      if (garage.length === 1) selectedCarIndex = 0;
-      auctionLots = auctionLots.filter(l => l.id !== carId);
-      refreshUI();
-    }
-
-    function buyCarFromAuction(carId, price) {
-      hapticImpact('medium');
-      const car = CARS_DB.find(c => c.id === carId);
-      if (!car) return;
-      if (balance < price) { alert('Недостаточно средств'); return; }
+      
+      if (garage.some(c => c.id === carId)) {
+        alert('Машина уже в гараже!');
+        return;
+      }
+      if (balance < price) {
+        alert(`Недостаточно средств! Нужно $${price.toLocaleString()}`);
+        haptic('light');
+        return;
+      }
+      
+      isProcessing = true;
+      haptic('medium');
+      
       balance -= price;
       garage.push({...car, currentPower: car.basePower, upgradeLevel: 0});
       auctionLots = auctionLots.filter(l => l.id !== carId);
+      
       refreshUI();
+      isProcessing = false;
     }
 
+    // ---------- ПРОДАЖА / ПРОКАЧКА ----------
     function sellCar(index) {
-      hapticImpact('light');
-      if (garage.length <= 1) { alert('Нельзя продать последнюю машину!'); return; }
+      if(isProcessing) return;
+      if(garage.length<=1) { alert('Нельзя продать последнюю машину!'); return; }
       const car = garage[index];
-      const sellValue = Math.floor(car.basePrice * 0.6 * (1 + 0.1 * car.upgradeLevel));
-      if (confirm(`Продать ${car.name} за $${sellValue.toLocaleString()}?`)) {
-        balance += sellValue;
-        garage.splice(index, 1);
-        if (selectedCarIndex >= garage.length) selectedCarIndex = 0;
-        refreshUI();
-      }
+      const price = Math.floor(car.basePrice * 0.6 * (1 + 0.1 * car.upgradeLevel));
+      if(!confirm(`Продать ${car.name} за $${price.toLocaleString()}?`)) return;
+      isProcessing = true;
+      haptic('light');
+      balance += price;
+      garage.splice(index,1);
+      if(selectedCarIndex >= garage.length) selectedCarIndex = 0;
+      refreshUI();
+      isProcessing = false;
     }
 
     function upgradeCar(index) {
-      hapticImpact('medium');
+      if(isProcessing) return;
       const car = garage[index];
       const cost = Math.floor(car.basePrice * 0.1 * (car.upgradeLevel + 1));
-      if (balance < cost) { alert(`Нужно $${cost}`); return; }
+      if(balance < cost) { alert(`Нужно $${cost}`); return; }
+      isProcessing = true;
+      haptic('medium');
       balance -= cost;
       car.upgradeLevel++;
       car.currentPower = Math.floor(car.basePower * (1 + 0.2 * car.upgradeLevel));
       refreshUI();
+      isProcessing = false;
     }
 
-    // ---------- СБОР ДОХОДА + СОБЫТИЯ (без NaN) ----------
-    const EVENTS = [
-      { type: 'bonus', text: '🎥 Вашу машину сняли в клипе! +15% к доходу.', multiplier: 0.15 },
-      { type: 'bonus', text: '📈 Рынок суперкаров вырос! +10% к сбору.', multiplier: 0.10 },
-      { type: 'penalty', text: '⚠️ Штраф за превышение скорости. -$2000.', fixed: -2000 },
-      { type: 'penalty', text: '🔧 Поломка двигателя. Ремонт -$5000.', fixed: -5000 },
-      { type: 'neutral', text: '☕️ Обычный день. Ничего не произошло.', multiplier: 0 },
-      { type: 'jackpot', text: '💎 ВАШ АВТОМОБИЛЬ ПРИЗНАН ЛУЧШИМ! УДВОЕНИЕ ДОХОДА!', multiplier: 1.0 }
-    ];
-
+    // ---------- СБОР ДОХОДА ----------
     function collectIncome() {
-      hapticImpact('heavy');
-      let total = totalIncomePerMinute();
-      if (total <= 0) {
-        incomeTimer = 60;
-        refreshUI();
-        return;
-      }
-
-      const event = EVENTS[Math.floor(Math.random() * EVENTS.length)];
-      let extra = 0;
-      let eventText = '';
-      
-      if (event.type === 'bonus') {
-        extra = Math.floor(total * event.multiplier);
-        total += extra;
-        eventText = `${event.text} +$${extra}`;
-      } else if (event.type === 'penalty') {
-        extra = event.fixed;
-        total += extra;
-        eventText = event.text;
-      } else if (event.type === 'jackpot') {
-        extra = total;
-        total *= 2;
-        eventText = `${event.text} +$${extra}`;
-      } else {
-        eventText = event.text;
-      }
-      
-      total = Math.max(0, total);
+      if(isProcessing) return;
+      let total = totalIncome();
+      if(total <= 0) { incomeTimer=60; refreshUI(); return; }
+      const r = Math.random();
+      let extra=0, msg='';
+      if(r<0.2) { extra = Math.floor(total*0.15); total+=extra; msg=`🎥 +15% ($${extra})`; }
+      else if(r<0.3) { extra = -2000; total+=extra; msg=`⚠️ Штраф -$2000`; }
+      else msg='☕️ Обычный сбор';
+      total = Math.max(0,total);
+      isProcessing = true;
+      haptic('heavy');
       balance += total;
-      
-      const msgDiv = document.getElementById('eventMessage');
-      msgDiv.innerHTML = `<div class="event-popup">✨ ${eventText}<br>💰 Собрано: $${total.toLocaleString()}</div>`;
-      setTimeout(() => msgDiv.innerHTML = '', 5000);
-      
+      const evDiv = document.getElementById('eventMessage');
+      evDiv.innerHTML = `<div class="event-popup">✨ ${msg}<br>💰 Собрано: $${total.toLocaleString()}</div>`;
+      setTimeout(()=>evDiv.innerHTML='',5000);
       incomeTimer = 60;
       refreshUI();
+      isProcessing = false;
     }
 
     // ---------- ТАЙМЕРЫ ----------
     function startTimers() {
-      if (timerInterval) clearInterval(timerInterval);
+      if(timerInterval) clearInterval(timerInterval);
       timerInterval = setInterval(() => {
-        if (incomeTimer > 0) {
-          incomeTimer--;
-          updateTimerDisplay();
-          if (incomeTimer === 0) collectIncome();
-        }
-        if (auctionTimer > 0) {
-          auctionTimer--;
-          const timerSpan = document.getElementById('auctionRefreshTimer');
-          if (timerSpan) timerSpan.textContent = `Обновление: ${Math.floor(auctionTimer/60)}:${(auctionTimer%60).toString().padStart(2,'0')}`;
-          if (auctionTimer === 0) {
-            generateAuctionLots();
-            auctionTimer = 300;
-            renderAuction();
-          }
+        if(incomeTimer>0) { incomeTimer--; updateTimerDisplay(); if(incomeTimer===0) collectIncome(); }
+        if(auctionTimer>0) { auctionTimer--; 
+          const el = document.getElementById('auctionRefreshTimer');
+          if(el) el.textContent = `Обновление: ${Math.floor(auctionTimer/60)}:${(auctionTimer%60).toString().padStart(2,'0')}`;
+          if(auctionTimer===0) { generateAuctionLots(); auctionTimer=300; renderAuction(); }
         }
       }, 1000);
     }
@@ -534,7 +450,7 @@
       document.getElementById('timerDisplay').textContent = `Следующий сбор: 00:${incomeTimer.toString().padStart(2,'0')}`;
     }
 
-    // ---------- ЗВУК ДВИГАТЕЛЯ ----------
+    // ---------- ЗВУК ----------
     function playEngineSound() {
       try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -554,26 +470,20 @@
     // ---------- ИНИЦИАЛИЗАЦИЯ ----------
     async function init() {
       await loadGame();
-      
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-      
+      document.getElementById('loading').style.display='none';
+      document.getElementById('app').style.display='block';
       initTabs();
       startTimers();
-      
-      document.getElementById('collectIncomeBtn').onclick = () => {
-        if (incomeTimer > 0) { collectIncome(); incomeTimer = 60; } 
-        else collectIncome();
+      document.getElementById('collectIncomeBtn').onclick = ()=>{
+        if(incomeTimer>0) { collectIncome(); incomeTimer=60; } else collectIncome();
       };
-      document.getElementById('forceRefreshAuction').onclick = () => {
-        hapticImpact('light');
-        if (balance < 500) { alert('Не хватает $500'); return; }
-        balance -= 500;
-        generateAuctionLots();
-        auctionTimer = 300;
-        refreshUI();
+      document.getElementById('forceRefreshAuction').onclick = ()=>{
+        if(isProcessing) return;
+        if(balance<500) { alert('Не хватает $500'); return; }
+        isProcessing=true; haptic('light');
+        balance-=500; generateAuctionLots(); auctionTimer=300;
+        refreshUI(); isProcessing=false;
       };
-      
       refreshUI();
     }
 
@@ -584,11 +494,11 @@
         catalog: document.getElementById('catalogSection'),
         auction: document.getElementById('auctionSection')
       };
-      tabs.forEach(t => t.addEventListener('click', () => {
+      tabs.forEach(t=>t.addEventListener('click',()=>{
         const tab = t.dataset.tab;
-        tabs.forEach(btn => btn.classList.remove('active'));
+        tabs.forEach(b=>b.classList.remove('active'));
         t.classList.add('active');
-        Object.values(sections).forEach(s => s.classList.remove('active'));
+        Object.values(sections).forEach(s=>s.classList.remove('active'));
         sections[tab].classList.add('active');
       }));
     }
